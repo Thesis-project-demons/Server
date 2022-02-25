@@ -2,15 +2,20 @@ DROP DATABASE IF EXISTS car;
 CREATE DATABASE car ;
 USE car ;
 CREATE TABLE user (
+   username varchar (200) COLLATE utf8mb4_unicode_ci NOT NULL ,
+   last_login datetime,
 user_id int AUTO_INCREMENT  , 
-email varchar (255) , 
-password  varchar(255) , 
+email varchar (255) COLLATE utf8mb4_unicode_ci NOT NULL , 
+password  varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL , 
 ip varchar(50) , 
 login_time DATETIME , 
 last_time_logged DATETIME , 
 PRIMARY KEY(user_id)
+) ;
 
-) ; 
+
+
+
 CREATE TABLE mechanic (
 mechanic_id int AUTO_INCREMENT ,
 email varchar (255) , 
@@ -58,4 +63,4 @@ id int AUTO_INCREMENT ,
 review longtext   , 
 PRIMARY KEY(id)
 );
-// prices is for the price of our subscription because the prices not fixed
+-- // prices is for the price of our subscription because the prices not fixed
