@@ -20,6 +20,8 @@ res.send(rez)
 
 var getAllPrices=(req,res)=> { 
 db.query("SELECT * from prices",(err1,rez)=> { 
+   
+
 if(err1)
 res.send(err1)
 else 

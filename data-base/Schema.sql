@@ -9,15 +9,20 @@ ip varchar(50) ,
 login_time DATETIME , 
 last_time_logged DATETIME , 
 PRIMARY KEY(user_id)
-
 ) ; 
 CREATE TABLE mechanic (
 mechanic_id int AUTO_INCREMENT ,
 email varchar (255) , 
+namePlace varchar(200) , 
+address varchar(200)
 password  varchar(255) , 
 ip varchar(50) , 
 login_time DATETIME ,   
 subscription int  , 
+stars  int , 
+countPoeple int , 
+location varchar(200),  
+
 PRIMARY KEY(mechanic_id)
 
 ); 
@@ -58,4 +63,12 @@ id int AUTO_INCREMENT ,
 review longtext   , 
 PRIMARY KEY(id)
 );
+
+CREATE TABLE favorite(
+id int AUTO_INCREMENT , 
+fav JSON , 
+PRIMARY KEY(id) 
+);
+
+
 // prices is for the price of our subscription because the prices not fixed
