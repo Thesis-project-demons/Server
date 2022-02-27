@@ -65,3 +65,4 @@ review longtext   ,
 PRIMARY KEY(id)
 );
 -- // prices is for the price of our subscription because the prices not fixed
+-- mysql -u root -p <data-base/Schema.sql;
