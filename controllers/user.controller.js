@@ -44,9 +44,12 @@ const Signup =
       }
     );
   });
-  const Login =
+const Login =
   (loginValidation,
   (req, res, next) => {
+    console.log(req.body);
+    console.log(req.body.password);
+
     db.query(
       `SELECT * FROM user WHERE email = ${db.escape(req.body.email)};`,
       (err, result) => {
@@ -69,14 +72,13 @@ const Signup =
           (bErr, bResult) => {
             // wrong password
             if (bErr) {
-              throw bErr;
-              return res.status(401).send({
+              res.status(401).send({
                 msg: "Email or password is incorrect!",
               });
             }
             if (bResult) {
               const token = jwt.sign(
-                { id: result[0].id },
+                { user_id: result[0].user_id },
                 "the-super-strong-secrect",
                 { expiresIn: "1h" }
               );
@@ -97,35 +99,35 @@ const Signup =
       }
     );
   });
-// const Getuser =
-//   (signupValidation,
-//   (req, res, next) => {
-//     if (
-//       !req.headers.authorization ||
-//       !req.headers.authorization.startsWith("Bearer") ||
-//       !req.headers.authorization.split(" ")[1]
-//     ) {
-//       return res.status(422).json({
-//         message: "Please provide the token",
-//       });
-//     }
-//     const theToken = req.headers.authorization.split(" ")[1];
-//     const decoded = jwt.verify(theToken, "the-super-strong-secrect");
-//     console.log(req.headers.authorization)
-//     db.query(
-//       "SELECT * FROM user where user_id=?",
-//       decoded.user_id,
-//       function (error, results, fields) {
-//         if (error) throw error;
-//         return res.send({
-//           error: false,
-//           data: results[0],
-//           message: "Fetch Successfully.",
-//         });
-//       }
-//     );
-//   });
+const getuser =
+  (signupValidation,
+  (req, res, next) => {
+    if (
+      !req.headers.authorization ||
+      !req.headers.authorization.startsWith("Bearer") ||
+      !req.headers.authorization.split(" ")[1]
+    ) {
+      return res.status(422).json({
+        message: "Please provide the token",
+      });
+    }
+    const theToken = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.verify(theToken, "the-super-strong-secrect");
+    db.query(
+      "SELECT * FROM user where user_id = ?",
+      decoded.user_id,
+      function (error, results, fields) {
+        if (error) throw error;
+        return res.send({
+          error: false,
+          data: results[0],
+          message: "Fetch Successfully.",
+        });
+      }
+    );
+  });
 module.exports = {
   Signup,
-  Login
+  Login,
+  getuser,
 };
