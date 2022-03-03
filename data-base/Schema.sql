@@ -6,11 +6,13 @@ username varchar (200) COLLATE utf8mb4_unicode_ci NOT NULL ,
 user_id int AUTO_INCREMENT  , 
 email varchar (255) COLLATE utf8mb4_unicode_ci NOT NULL , 
 password  varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL , 
-ip varchar(50) , 
-login_time DATETIME , 
-last_time_logged DATETIME , 
-PRIMARY KEY(user_id)
-) ;
+ip varchar(50) ,
+last_login datetime , 
+login_time datetime , 
+last_time_logged datetime , 
+PRIMARY KEY(user_id),
+UNIQUE KEY email (email)
+)ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 
@@ -62,3 +64,4 @@ review longtext   ,
 PRIMARY KEY(id)
 );
 -- // prices is for the price of our subscription because the prices not fixed
+-- mysql -u root -p <data-base/Schema.sql;
