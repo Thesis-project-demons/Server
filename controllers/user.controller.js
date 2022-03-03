@@ -3,7 +3,12 @@ const { signupValidation, loginValidation } = require("./validation.js");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const res = require("express/lib/response");
 
+var num1 = 0
+var num2 = 0
+var num3 = 0
+var num4 = 0
 const Signup =
   (signupValidation,
   (req, res, next) => {
@@ -26,7 +31,7 @@ const Signup =
             } else {
               // has hashed password => add to database
               db.query(
-                `INSERT INTO user (username, email, password) VALUES ('${
+                `INSERT INTO user (username, email, password,PhoneNumber) VALUES ('${
                   req.body.username
                 }', ${db.escape(req.body.email)}, ${db.escape(hash)})`,
                 (err, result) => {
@@ -125,7 +130,52 @@ const Signup =
 //       }
 //     );
 //   });
+const profildata =(req,res)=>{
+ let query ='SELECT * FROM user'
+ db.query(query,(err,data)=>{
+   if(err){res.send(err)}
+    res.send(data)
+ })
+}
+
+function sendTextMessage(num) {
+
+  var firstNum = Math.floor(Math.random() * 10)
+  num1 = firstNum
+  var secondNum = Math.floor(Math.random() * 10)
+  num2 = secondNum
+  var thirdNum = Math.floor(Math.random() * 10)
+  num3 = thirdNum
+  var fourthNum = Math.floor(Math.random() * 10)
+  num4 = fourthNum
+  client.messages.create({
+    body: 'your verification code is ' + firstNum + '' + secondNum + '' + thirdNum + '' + fourthNum,
+    to: '+21652049969',
+    from: '+19148098893'
+ }).then(message => console.log(message))
+   .catch(error => console.log(error))
+}
+
+function resetPassword() {
+  var firstNum = Math.floor(Math.random() * 10)
+  num1 = firstNum
+  var secondNum = Math.floor(Math.random() * 10)
+  num2 = secondNum
+  var thirdNum = Math.floor(Math.random() * 10)
+  num3 = thirdNum
+  var fourthNum = Math.floor(Math.random() * 10)
+  num4 = fourthNum
+  client.messages.create({
+    body: 'your reset password code is ' + firstNum + '' + secondNum + '' + thirdNum + '' + fourthNum,
+    to: '+21652049969',
+    from: '+19148098893'
+ }).then(message => console.log(message))
+   .catch(error => console.log(error))
+}
 module.exports = {
   Signup,
-  Login
+  Login,
+profildata,
+resetPassword,
+sendTextMessage
 };

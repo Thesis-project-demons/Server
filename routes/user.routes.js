@@ -3,6 +3,7 @@ const userroutes = require("../controllers/user.controller.js");
 
 router.post("/signup",userroutes.Signup)
 router.post("/login",userroutes.Login)
+router.get("/profil", userroutes.profildata)
 
 
 module.exports = router;
