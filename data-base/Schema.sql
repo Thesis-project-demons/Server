@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS car;
+-- DROP DATABASE IF EXISTS car;
 CREATE DATABASE car ;
 USE car ;
 CREATE TABLE user (
@@ -11,6 +11,7 @@ last_login datetime ,
 login_time datetime , 
 last_time_logged datetime , 
 PRIMARY KEY(user_id),
+photoUrl varchar(255),
 UNIQUE KEY email (email)
 )ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
