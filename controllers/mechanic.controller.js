@@ -103,8 +103,18 @@ var Login=(loginValidation,
     );
   });
 
+var storage=(req,res)=>{
+  db.query(`INSERT INTO storage (image,title,price) VALUES ('${req.body.image}','${req.body.title}','${req.body.price}')`,(err,data)=>{
+    if(err){
+      res.send(err)
+    }else{
+      res.status(201).send(data)
+    }
+  })
+}
 module.exports={
     login,
     signup,
-    Login
+    Login,
+    storage
 }

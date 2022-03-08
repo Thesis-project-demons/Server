@@ -126,8 +126,44 @@ const getuser =
       }
     );
   });
+
+var reminder = (req, res) => {
+  db.query(
+    `INSERT INTO reminder (technicalVisit,insuranceExpiry,vehicleLicenseExpiry,image) VALUES ('${req.body.technicalVisit}','${req.body.insuranceExpiry}','${req.body.vehicleLicenseExpiry}','${req.body.image}')`,
+    (err, data) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.status(201).send(data);
+      }
+    }
+  );
+};
+
+var getReminder = (req, res) => {
+  db.query(`SELECT * FROM reminder`, (err, data) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(data);
+    }
+  });
+};
+
+const deleteReminder = (req, res) => {
+  db.query(`DELETE FROM reminder WHERE id='${req.params.id}'`, (err, data) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(data);
+    }
+  });
+};
 module.exports = {
   Signup,
   Login,
   getuser,
+  reminder,
+  getReminder,
+  deleteReminder,
 };
