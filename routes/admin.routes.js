@@ -6,5 +6,6 @@ router.get("/getAllPrices" , userControle.getAllPrices)
 router.get("/getAllGithub",userControle.getAllGithub)
 router.post("/changeGithubRepo" , userControle.changeGithubRepo)
 router.get("/getReview", userControle.getReview)
+router.post("/addReview" , userControle.addReview)
 module.exports = router;
 

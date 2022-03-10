@@ -20,10 +20,23 @@ res.send(rez)
 
 var getAllPrices=(req,res)=> { 
 db.query("SELECT * from prices",(err1,rez)=> { 
+   
+
 if(err1)
 res.send(err1)
 else 
 res.send(rez) 
+})
+}
+
+
+var addReview  = (req,res)=> { 
+var message = req.body.message  
+db.query(`INSERT INTO reviews (review) values ('${message}')`,(err,rez)=> { 
+if(err)
+res.send(err)
+else 
+res.send("Review Added Thank you")
 })
 }
 
@@ -63,4 +76,4 @@ else
 res.send(rez)
 })
 }
-module.exports={getAllUsers,getAllMechanic,getAllPrices,getAllGithub,changeGithubRepo,getReview}
+module.exports={getAllUsers,getAllMechanic,getAllPrices,getAllGithub,changeGithubRepo,getReview ,addReview}
