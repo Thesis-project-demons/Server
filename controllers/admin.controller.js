@@ -67,7 +67,7 @@ res.send("Check Your DataBase ")
     })
 
 }
-
+// Hrlo
 var getReview = (req, res)=> { 
 db.query("select * from reviews" , (err1 ,rez)=> { 
 if(err1)
