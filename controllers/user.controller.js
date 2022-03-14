@@ -3,12 +3,11 @@ const { signupValidation, loginValidation } = require("./validation.js");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const res = require("express/lib/response");
 
-var num1 = 0
-var num2 = 0
-var num3 = 0
-var num4 = 0
+var num1 = 0;
+var num2 = 0;
+var num3 = 0;
+var num4 = 0;
 const Signup =
   (signupValidation,
   (req, res, next) => {
@@ -49,9 +48,12 @@ const Signup =
       }
     );
   });
-  const Login =
+const Login =
   (loginValidation,
   (req, res, next) => {
+    console.log(req.body);
+    console.log(req.body.password);
+
     db.query(
       `SELECT * FROM user WHERE email = ${db.escape(req.body.email)};`,
       (err, result) => {
@@ -74,14 +76,13 @@ const Signup =
           (bErr, bResult) => {
             // wrong password
             if (bErr) {
-              throw bErr;
-              return res.status(401).send({
+              res.status(401).send({
                 msg: "Email or password is incorrect!",
               });
             }
             if (bResult) {
               const token = jwt.sign(
-                { id: result[0].id },
+                { user_id: result[0].user_id },
                 "the-super-strong-secrect",
                 { expiresIn: "1h" }
               );
@@ -102,80 +103,137 @@ const Signup =
       }
     );
   });
-// const Getuser =
-//   (signupValidation,
-//   (req, res, next) => {
-//     if (
-//       !req.headers.authorization ||
-//       !req.headers.authorization.startsWith("Bearer") ||
-//       !req.headers.authorization.split(" ")[1]
-//     ) {
-//       return res.status(422).json({
-//         message: "Please provide the token",
-//       });
-//     }
-//     const theToken = req.headers.authorization.split(" ")[1];
-//     const decoded = jwt.verify(theToken, "the-super-strong-secrect");
-//     console.log(req.headers.authorization)
-//     db.query(
-//       "SELECT * FROM user where user_id=?",
-//       decoded.user_id,
-//       function (error, results, fields) {
-//         if (error) throw error;
-//         return res.send({
-//           error: false,
-//           data: results[0],
-//           message: "Fetch Successfully.",
-//         });
-//       }
-//     );
-//   });
-const profildata =(req,res)=>{
- let query ='SELECT * FROM user'
- db.query(query,(err,data)=>{
-   if(err){res.send(err)}
-    res.send(data)
- })
-}
+const getuser =
+  (signupValidation,
+  (req, res, next) => {
+    if (
+      !req.headers.authorization ||
+      !req.headers.authorization.startsWith("Bearer") ||
+      !req.headers.authorization.split(" ")[1]
+    ) {
+      return res.status(422).json({
+        message: "Please provide the token",
+      });
+    }
+    const theToken = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.verify(theToken, "the-super-strong-secrect");
+    db.query(
+      "SELECT * FROM user where user_id = ?",
+      decoded.user_id,
+      function (error, results, fields) {
+        if (error) throw error;
+        return res.send({
+          error: false,
+          data: results[0],
+          message: "Fetch Successfully.",
+        });
+      }
+    );
+  });
+
+var reminder = (req, res) => {
+  db.query(
+    `INSERT INTO reminder (technicalVisit,insuranceExpiry,vehicleLicenseExpiry,image) VALUES ('${req.body.technicalVisit}','${req.body.insuranceExpiry}','${req.body.vehicleLicenseExpiry}','${req.body.image}')`,
+    (err, data) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.status(201).send(data);
+      }
+    }
+  );
+};
+
+var getReminder = (req, res) => {
+  db.query(`SELECT * FROM reminder`, (err, data) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(data);
+    }
+  });
+};
+
+const deleteReminder = (req, res) => {
+  db.query(`DELETE FROM reminder WHERE id='${req.params.id}'`, (err, data) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(data);
+    }
+  });
+};
+const profildata = (req, res) => {
+  let query = "SELECT * FROM user";
+  db.query(query, (err, data) => {
+    if (err) {
+      res.send(err);
+    }
+    res.send(data);
+  });
+};
 
 function sendTextMessage(num) {
-
-  var firstNum = Math.floor(Math.random() * 10)
-  num1 = firstNum
-  var secondNum = Math.floor(Math.random() * 10)
-  num2 = secondNum
-  var thirdNum = Math.floor(Math.random() * 10)
-  num3 = thirdNum
-  var fourthNum = Math.floor(Math.random() * 10)
-  num4 = fourthNum
-  client.messages.create({
-    body: 'your verification code is ' + firstNum + '' + secondNum + '' + thirdNum + '' + fourthNum,
-    to: '+21652049969',
-    from: '+19148098893'
- }).then(message => console.log(message))
-   .catch(error => console.log(error))
+  var firstNum = Math.floor(Math.random() * 10);
+  num1 = firstNum;
+  var secondNum = Math.floor(Math.random() * 10);
+  num2 = secondNum;
+  var thirdNum = Math.floor(Math.random() * 10);
+  num3 = thirdNum;
+  var fourthNum = Math.floor(Math.random() * 10);
+  num4 = fourthNum;
+  client.messages
+    .create({
+      body:
+        "your verification code is " +
+        firstNum +
+        "" +
+        secondNum +
+        "" +
+        thirdNum +
+        "" +
+        fourthNum,
+      to: "+21652049969",
+      from: "+19148098893",
+    })
+    .then((message) => console.log(message))
+    .catch((error) => console.log(error));
 }
 
 function resetPassword() {
-  var firstNum = Math.floor(Math.random() * 10)
-  num1 = firstNum
-  var secondNum = Math.floor(Math.random() * 10)
-  num2 = secondNum
-  var thirdNum = Math.floor(Math.random() * 10)
-  num3 = thirdNum
-  var fourthNum = Math.floor(Math.random() * 10)
-  num4 = fourthNum
-  client.messages.create({
-    body: 'your reset password code is ' + firstNum + '' + secondNum + '' + thirdNum + '' + fourthNum,
-    to: '+21652049969',
-    from: '+19148098893'
- }).then(message => console.log(message))
-   .catch(error => console.log(error))
+  var firstNum = Math.floor(Math.random() * 10);
+  num1 = firstNum;
+  var secondNum = Math.floor(Math.random() * 10);
+  num2 = secondNum;
+  var thirdNum = Math.floor(Math.random() * 10);
+  num3 = thirdNum;
+  var fourthNum = Math.floor(Math.random() * 10);
+  num4 = fourthNum;
+  client.messages
+    .create({
+      body:
+        "your reset password code is " +
+        firstNum +
+        "" +
+        secondNum +
+        "" +
+        thirdNum +
+        "" +
+        fourthNum,
+      to: "+21652049969",
+      from: "+19148098893",
+    })
+    .then((message) => console.log(message))
+    .catch((error) => console.log(error));
 }
 module.exports = {
   Signup,
   Login,
-profildata,
-resetPassword,
-sendTextMessage
+  profildata,
+  resetPassword,
+  sendTextMessage,
+  deleteReminder,
+  getReminder,
+  reminder,
+  getuser,
 };
